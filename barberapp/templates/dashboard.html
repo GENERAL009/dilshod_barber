@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Barber CRM</title>
+    <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<div class="wrap">
+    <h1>Barber CRM</h1>
+
+    <div class="card">
+        <h2>Yangi yozuv</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label>Telefon</label>
+            <div class="phone-row">
+                <span class="prefix"><image src="/static/flag.png"></image> +998</span>
+                <input
+                        name="phone"
+                        type="tel"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        maxlength="9"
+                        placeholder="901234567"
+                        required
+                        value="{{ request.POST.phone|default:'' }}"
+                />
+            </div>
+            <label>Kelish vaqti</label>
+            {{ form.scheduled_at }}
+            <button type="submit">Saqlash</button>
+            {% if form.errors %}
+            <pre class="err">{{ form.errors }}</pre>
+            {% endif %}
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Filter</h2>
+        <form method="get">
+            <label>Kunni tanlang</label>
+            <input type="date" name="date" value="{{ selected_date|date:'Y-m-d' }}">
+            <button type="submit">Ko‘rsat</button>
+            <a href="/" style="margin-left:10px;"><button style="color: blue;">Bugun</button></a>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Bugungi yozuvlar</h2>
+        <table>
+            <tr>
+                <th>Vaqt</th>
+                <th>Telefon</th>
+                <th>Status</th>
+                <th>SMS</th>
+                <th></th>
+            </tr>
+            {% for a in appts %}
+            <tr>
+                <td>{{ a.scheduled_at|date:"H:i" }}</td>
+                <td>{{ a.phone }}</td>
+                {% if a.status == "cancelled" %}
+                <td style="color: red;">{{ a.status }}</td>
+                {% else %}
+                <td style="color: green;">{{ a.status }}</td>
+                {% endif %}
+                <td>{% if a.reminder_sent_at %}✅{% else %}—{% endif %}</td>
+                <td>
+                    {% if a.status == "scheduled" %}
+                    <a href="{% url 'cancel_appointment' a.id %}"><button>Cancel</button></a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Hozircha yo‘q</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+</body>
+</html>

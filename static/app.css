@@ -1,0 +1,54 @@
+body {
+    font-family: system-ui, Arial;
+    background: #f6f7fb;
+}
+
+.wrap {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 12px;
+}
+
+.card {
+    background: #fff;
+    padding: 16px;
+    border-radius: 12px;
+    margin: 14px 0;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+input {
+    width: 80%;
+    padding: 20px;
+    margin-top: 6px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+button {
+    margin-top: 12px;
+    padding: 20px 30px;
+    border: 1px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.err {
+    color: #b00020;
+}

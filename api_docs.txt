@@ -1,0 +1,52 @@
+BARBER CRM - API DOCUMENTATION FOR MOBILE (FLUTTER)
+================================================
+
+Base URL: http://your-server-ip:8000/
+Swagger UI: http://your-server-ip:8000/api/swagger/
+ReDoc: http://your-server-ip:8000/api/swagger/redoc/
+
+1. APPOINTMENTS (NAVBAТLAR)
+---------------------------
+
+Endpoint: /api/appointments/
+
+GET: Navbatlar ro'yxatini olish (List)
+Response Example:
+[
+    {
+        "id": 1,
+        "phone": "998938037737",
+        "scheduled_at": "2026-03-27T15:00:00+05:00",
+        "status": "scheduled",
+        "created_at": "2026-03-27T10:00:00+05:00"
+    }
+]
+
+POST: Yangi navbat yaratish (Create)
+Payload:
+{
+    "phone": "901234567",
+    "scheduled_at": "2026-03-27T16:30:00+05:00"
+}
+Note: phone 9 ta raqam bo'lishi kerak (998 siz).
+
+2. CANCEL APPOINTMENT (BEKOR QILISH)
+------------------------------------
+
+Endpoint: /api/appointments/{id}/cancel/
+Method: POST
+Response:
+{
+    "status": "appointment cancelled"
+}
+
+3. DETAIL / UPDATE / DELETE
+---------------------------
+
+GET /api/appointments/{id}/ - Bitta navbat ma'lumotini olish
+PATCH /api/appointments/{id}/ - Ma'lumotni yangilash
+DELETE /api/appointments/{id}/ - Navbatni o'chirish
+
+------------------------------------------------
+Tayyorladi: Antigravity AI
+Sana: 27.03.2026

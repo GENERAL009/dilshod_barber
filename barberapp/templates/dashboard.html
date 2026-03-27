@@ -2,82 +2,147 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>Barber CRM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barber CRM - Modern Scheduler</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/app.css">
 </head>
 <body>
 <div class="wrap">
-    <h1>Barber CRM</h1>
+    <header class="main-header">
+        <div class="logo-area">
+            <span class="logo-icon">✂️</span>
+            <h1>Barber CRM</h1>
+        </div>
+        <div class="date-display">{{ selected_date|date:"d F, Y" }}</div>
+    </header>
 
-    <div class="card">
-        <h2>Yangi yozuv</h2>
-        <form method="post">
-            {% csrf_token %}
-            <label>Telefon</label>
-            <div class="phone-row">
-                <span class="prefix"><image src="/static/flag.png"></image> +998</span>
-                <input
-                        name="phone"
-                        type="tel"
-                        inputmode="numeric"
-                        pattern="[0-9]*"
-                        maxlength="9"
-                        placeholder="901234567"
-                        required
-                        value="{{ request.POST.phone|default:'' }}"
-                />
-            </div>
-            <label>Kelish vaqti</label>
-            {{ form.scheduled_at }}
-            <button type="submit">Saqlash</button>
-            {% if form.errors %}
-            <pre class="err">{{ form.errors }}</pre>
-            {% endif %}
-        </form>
-    </div>
-
-    <div class="card">
-        <h2>Filter</h2>
-        <form method="get">
-            <label>Kunni tanlang</label>
-            <input type="date" name="date" value="{{ selected_date|date:'Y-m-d' }}">
-            <button type="submit">Ko‘rsat</button>
-            <a href="/" style="margin-left:10px;"><button style="color: blue;">Bugun</button></a>
-        </form>
-    </div>
-
-    <div class="card">
-        <h2>Bugungi yozuvlar</h2>
-        <table>
-            <tr>
-                <th>Vaqt</th>
-                <th>Telefon</th>
-                <th>Status</th>
-                <th>SMS</th>
-                <th></th>
-            </tr>
-            {% for a in appts %}
-            <tr>
-                <td>{{ a.scheduled_at|date:"H:i" }}</td>
-                <td>{{ a.phone }}</td>
-                {% if a.status == "cancelled" %}
-                <td style="color: red;">{{ a.status }}</td>
-                {% else %}
-                <td style="color: green;">{{ a.status }}</td>
+    <div class="grid">
+        <div class="card">
+            <h2><span>📝</span> Yangi yozuv</h2>
+            <form method="post">
+                {% csrf_token %}
+                <label>Telefon raqami</label>
+                <div class="phone-row">
+                    <span class="prefix">🇺🇿 +998</span>
+                    <input
+                            name="phone"
+                            type="tel"
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            maxlength="9"
+                            placeholder="90 123 45 67"
+                            required
+                            value="{{ request.POST.phone|default:'' }}"
+                    />
+                </div>
+                <label>Kelish vaqti</label>
+                {{ form.scheduled_at }}
+                <button type="submit">Navbatga qo'shish</button>
+                {% if form.errors %}
+                <div class="err" style="margin-top: 1rem; font-size: 0.875rem; color: var(--danger);">
+                    {{ form.errors }}
+                </div>
                 {% endif %}
-                <td>{% if a.reminder_sent_at %}✅{% else %}—{% endif %}</td>
-                <td>
-                    {% if a.status == "scheduled" %}
-                    <a href="{% url 'cancel_appointment' a.id %}"><button>Cancel</button></a>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2><span>🔍</span> Filter</h2>
+            <form method="get">
+                <label>Kunni tanlang</label>
+                <input type="date" name="date" value="{{ selected_date|date:'Y-m-d' }}">
+                <div style="display: flex; gap: 0.75rem;">
+                    <button type="submit">Qidirish</button>
+                    <a href="/" style="flex: 1;"><button type="button" class="btn-secondary">Bugun</button></a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><span>📅</span> Yozuvlar ro'yxati</h2>
+        
+        <!-- Desktop Table -->
+        <div class="table-wrap desktop-only">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Vaqt</th>
+                        <th>Telefon</th>
+                        <th>Status</th>
+                        <th>SMS</th>
+                        <th>Harakat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in appts %}
+                    <tr>
+                        <td style="font-weight: 600;">{{ a.scheduled_at|date:"H:i" }}</td>
+                        <td>+998 {{ a.phone }}</td>
+                        <td>
+                            {% if a.status == "cancelled" %}
+                            <span class="status-badge status-cancelled">Bekor qilindi</span>
+                            {% elif a.status == "done" %}
+                            <span class="status-badge" style="background: #eff6ff; color: #3b82f6;">Tugallandi</span>
+                            {% else %}
+                            <span class="status-badge status-scheduled">Rejalashtirilgan</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: center;">{% if a.reminder_sent_at %}✅{% else %}<span style="color: var(--text-muted); opacity: 0.5;">—</span>{% endif %}</td>
+                        <td>
+                            {% if a.status == "scheduled" %}
+                            <a href="{% url 'cancel_appointment' a.id %}">
+                                <button type="button" class="btn-cancel">Bekor qilish</button>
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 3rem 0;">
+                            Hozircha yozuvlar mavjud emas
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mobile List -->
+        <div class="appt-card-list mobile-only">
+            {% for a in appts %}
+            <div class="appt-mobile-item">
+                <div class="appt-mobile-header">
+                    <span class="appt-mobile-time">{{ a.scheduled_at|date:"H:i" }}</span>
+                    {% if a.status == "cancelled" %}
+                        <span class="status-badge status-cancelled">Bekor qilindi</span>
+                    {% elif a.status == "done" %}
+                        <span class="status-badge" style="background: #eff6ff; color: #3b82f6;">Tugallandi</span>
+                    {% else %}
+                        <span class="status-badge status-scheduled">Rejalashtirilgan</span>
                     {% endif %}
-                </td>
-            </tr>
+                </div>
+                <span class="appt-mobile-phone">📞 +998 {{ a.phone }}</span>
+                <div style="font-size: 0.8125rem; color: var(--text-muted);">
+                    SMS: {% if a.reminder_sent_at %}Yuborildi ✅{% else %}Yuborilmadi{% endif %}
+                </div>
+                {% if a.status == "scheduled" %}
+                <div class="appt-mobile-actions">
+                    <a href="{% url 'cancel_appointment' a.id %}" style="width: 100%;">
+                        <button type="button" class="btn-cancel" style="width: 100%;">Bekor qilish</button>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
             {% empty %}
-            <tr>
-                <td colspan="5">Hozircha yo‘q</td>
-            </tr>
+            <div style="text-align: center; color: var(--text-muted); padding: 2rem 0;">
+                Hozircha yozuvlar mavjud emas
+            </div>
             {% endfor %}
-        </table>
+        </div>
     </div>
 </div>
 </body>

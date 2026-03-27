@@ -53,3 +53,29 @@ def dashboard(request):
 def cancel_appointment(request, pk: int):
     Appointment.objects.filter(pk=pk).update(status="cancelled")
     return redirect("dashboard")
+
+from io import StringIO
+from django.http import JsonResponse, HttpResponseForbidden
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET
+from django.core.management import call_command
+
+# ✅ uzun, taxmin qilib bo'lmaydigan token qo'ying
+REMINDER_TOKEN = "PUT_YOUR_LONG_RANDOM_TOKEN_HERE"
+
+@csrf_exempt
+@require_GET
+def trigger_reminders(request):
+    if request.GET.get("token", "") != REMINDER_TOKEN:
+        return HttpResponseForbidden("bad token")
+
+    minutes = int(request.GET.get("minutes", "2"))  # test uchun 2, prod uchun 30
+
+    out = StringIO()
+    call_command("send_reminders", minutes=minutes, stdout=out)
+
+    return JsonResponse({
+        "ok": True,
+        "minutes": minutes,
+        "output": out.getvalue(),
+    })

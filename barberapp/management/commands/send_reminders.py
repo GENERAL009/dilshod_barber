@@ -46,9 +46,10 @@ class Command(BaseCommand):
         # ✅ Target: scheduled_at taxminan (now + remind_before)
         target = now + timezone.timedelta(minutes=remind_before)
 
-        # ✅ Late/Early grace window
-        start = target - timezone.timedelta(seconds=LATE_GRACE_SECONDS)
+        # ✅ Robust rejim: end = target + grace, start = now
+        # Bu logic script kechiksa ham SMS yuborishni kafolatlaydi.
         end = target + timezone.timedelta(seconds=EARLY_GRACE_SECONDS)
+        start = now  # faqat kelajakdagilarni yuboramiz
 
         client = EskizClient()
 
@@ -70,15 +71,14 @@ class Command(BaseCommand):
                 Appointment.objects.filter(
                     status="scheduled",
                     reminder_sent_at__isnull=True,
-                    scheduled_at__gt=now,              # ✅ o'tib ketganlarni yubormaymiz
-                    scheduled_at__gte=start,
-                    scheduled_at__lt=end,
+                    scheduled_at__gt=now,
+                    scheduled_at__lte=end,             # ✅ target_vaqt + grace gacha hamma kutayotganlarni yuborish
                 ).order_by("scheduled_at")
             )
 
             self.stdout.write(
                 f"[send_reminders] now={now.isoformat()} minutes={remind_before} "
-                f"target={target.isoformat()} window=[{start.isoformat()} .. {end.isoformat()}] "
+                f"target={target.isoformat()} window=[{now.isoformat()} .. {end.isoformat()}] "
                 f"matches={len(qs)} dry_run={dry_run}"
             )
 

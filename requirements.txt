@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 asgiref>=3.8
 certifi
 charset-normalizer
@@ -10,3 +11,17 @@ tzdata
 urllib3
 djangorestframework
 drf-spectacular
+=======
+asgiref>=3.8
+certifi
+charset-normalizer
+Django>=5.1,<6.0
+idna
+python-dotenv
+requests
+sqlparse
+tzdata
+urllib3
+djangorestframework
+drf-spectacular
+>>>>>>> 5061f9ce73e9ff565fef3a01f3359440a19a743d

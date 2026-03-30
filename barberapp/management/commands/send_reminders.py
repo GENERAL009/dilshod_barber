@@ -7,7 +7,7 @@ from barberapp.models import Appointment
 from barberapp.eskiz_client import EskizClient
 
 # ✅ ENV YO'Q — shu yerda boshqarasiz
-DEFAULT_REMIND_BEFORE_MINUTES = 2
+DEFAULT_REMIND_BEFORE_MINUTES = 30
 
 # ✅ Cron/Task kechikishi uchun "grace"
 LATE_GRACE_SECONDS = 180   # 3 minut kechiksa ham yubor

@@ -69,7 +69,7 @@ def trigger_reminders(request):
     if request.GET.get("token", "") != REMINDER_TOKEN:
         return HttpResponseForbidden("bad token")
 
-    minutes = int(request.GET.get("minutes", "2"))  # test uchun 2, prod uchun 30
+    minutes = int(request.GET.get("minutes", "30"))  # test uchun 2, prod uchun 30
 
     out = StringIO()
     call_command("send_reminders", minutes=minutes, stdout=out)

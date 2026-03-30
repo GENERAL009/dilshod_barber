@@ -8,24 +8,8 @@ from .models import Appointment
 
 
 def dashboard(request):
-    # 1) POST -> yangi appointment yaratish
-    if request.method == "POST":
-        form = AppointmentForm(request.POST)
-        if form.is_valid():
-            form.save()
-            # Saqlagandan keyin shu tanlangan kunga qaytarish (agar filter bo'lsa)
-            date_q = request.GET.get("date")
-            return redirect(f"/?date={date_q}" if date_q else "/")
-    else:
-        form = AppointmentForm()
-
-    # 2) GET -> date filter (default: bugun)
-    date_str = request.GET.get("date")  # YYYY-MM-DD
-    selected_date = parse_date(date_str) if date_str else timezone.localdate()
-
-    if not selected_date:
-        selected_date = timezone.localdate()  # noto'g'ri format bo'lsa ham bugun
-
+    # 1) GET -> faqat bugungi/kelajakdagi navbatlar (view only)
+    selected_date = timezone.localdate()
     tz = timezone.get_current_timezone()
     start = timezone.make_aware(
         timezone.datetime.combine(selected_date, timezone.datetime.min.time()),
@@ -42,6 +26,45 @@ def dashboard(request):
     return render(
         request,
         "dashboard.html",
+        {
+            "appts": appts,
+            "selected_date": selected_date,
+        },
+    )
+
+def management(request):
+    # 1) POST -> yangi appointment yaratish
+    if request.method == "POST":
+        form = AppointmentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("management")
+    else:
+        form = AppointmentForm()
+
+    # 2) GET -> date filter (default: bugun)
+    date_str = request.GET.get("date")
+    selected_date = parse_date(date_str) if date_str else timezone.localdate()
+
+    if not selected_date:
+        selected_date = timezone.localdate()
+
+    tz = timezone.get_current_timezone()
+    start = timezone.make_aware(
+        timezone.datetime.combine(selected_date, timezone.datetime.min.time()),
+        tz
+    )
+    end = start + timezone.timedelta(days=1)
+
+    appts = (
+        Appointment.objects
+        .filter(scheduled_at__gte=start, scheduled_at__lt=end)
+        .order_by("scheduled_at")
+    )
+
+    return render(
+        request,
+        "management.html",
         {
             "form": form,
             "appts": appts,

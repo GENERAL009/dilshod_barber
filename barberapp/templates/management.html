@@ -13,20 +13,25 @@
 <div class="wrap">
     <header class="main-header">
         <div class="logo-area">
-            <span class="logo-icon">⚙️</span>
-            <h1>Management</h1>
+            <span class="logo-icon">➕</span>
+            <h1>Yangi yozuv</h1>
         </div>
         <div class="date-display">{{ selected_date|date:"d F, Y" }}</div>
     </header>
 
     <nav class="nav-bar">
+<<<<<<< HEAD
         <a href="{% url 'dashboard' %}" class="nav-link"><button>🏠 Dashboard</button></a>
         <a href="{% url 'management' %}" class="nav-link active"><button>🛠️ Boshqaruv</button></a>
+=======
+        <a href="{% url 'dashboard' %}" class="nav-link">🏠 Dashboard</a>
+        <a href="{% url 'management' %}" class="nav-link active">➕ Yangi qo'shish</a>
+>>>>>>> b62acdd2e8c197459e3bff007c2a4807af4676ba
     </nav>
 
-    <div class="grid">
+    <div style="max-width: 600px; margin: 0 auto;">
         <div class="card">
-            <h2><span>📝</span> Yangi yozuv</h2>
+            <h2><span>📝</span> Ma'lumotlarni kiriting</h2>
             <form method="post">
                 {% csrf_token %}
                 <label>Telefon raqami</label>
@@ -45,7 +50,12 @@
                 </div>
                 <label>Kelish vaqti</label>
                 {{ form.scheduled_at }}
-                <button type="submit">Navbatga qo'shish</button>
+                <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                    <button type="submit" style="flex: 2;">Navbatga qo'shish</button>
+                    <a href="{% url 'dashboard' %}" style="flex: 1; text-decoration: none;">
+                        <button type="button" class="btn-secondary" style="width: 100%;">Bekor qilish</button>
+                    </a>
+                </div>
                 {% if form.errors %}
                 <div class="err" style="margin-top: 1rem; font-size: 0.875rem; color: var(--danger);">
                     {{ form.errors }}
@@ -53,6 +63,7 @@
                 {% endif %}
             </form>
         </div>
+<<<<<<< HEAD
 
         <div class="card">
             <h2><span>🔍</span> Filter</h2>
@@ -148,6 +159,8 @@
             </div>
             {% endfor %}
         </div>
+=======
+>>>>>>> b62acdd2e8c197459e3bff007c2a4807af4676ba
     </div>
 </div>
 </body>

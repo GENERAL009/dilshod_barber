@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barber CRM - Modern Scheduler</title>
+    <title>Barber CRM - Management</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -13,16 +13,59 @@
 <div class="wrap">
     <header class="main-header">
         <div class="logo-area">
-            <span class="logo-icon">🏠</span>
-            <h1>Dashboard</h1>
+            <span class="logo-icon">⚙️</span>
+            <h1>Management</h1>
         </div>
         <div class="date-display">{{ selected_date|date:"d F, Y" }}</div>
     </header>
 
     <nav class="nav-bar">
-        <a href="{% url 'dashboard' %}" class="nav-link active">🏠 Dashboard</a>
-        <a href="{% url 'management' %}" class="nav-link">🛠️ Boshqaruv</a>
+        <a href="{% url 'dashboard' %}" class="nav-link">🏠 Dashboard</a>
+        <a href="{% url 'management' %}" class="nav-link active">🛠️ Boshqaruv</a>
     </nav>
+
+    <div class="grid">
+        <div class="card">
+            <h2><span>📝</span> Yangi yozuv</h2>
+            <form method="post">
+                {% csrf_token %}
+                <label>Telefon raqami</label>
+                <div class="phone-row">
+                    <span class="prefix">🇺🇿 +998</span>
+                    <input
+                            name="phone"
+                            type="tel"
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            maxlength="9"
+                            placeholder="90 123 45 67"
+                            required
+                            value="{{ request.POST.phone|default:'' }}"
+                    />
+                </div>
+                <label>Kelish vaqti</label>
+                {{ form.scheduled_at }}
+                <button type="submit">Navbatga qo'shish</button>
+                {% if form.errors %}
+                <div class="err" style="margin-top: 1rem; font-size: 0.875rem; color: var(--danger);">
+                    {{ form.errors }}
+                </div>
+                {% endif %}
+            </form>
+        </div>
+
+        <div class="card">
+            <h2><span>🔍</span> Filter</h2>
+            <form method="get">
+                <label>Kunni tanlang</label>
+                <input type="date" name="date" value="{{ selected_date|date:'Y-m-d' }}">
+                <div style="display: flex; gap: 0.75rem;">
+                    <button type="submit">Qidirish</button>
+                    <a href="{% url 'management' %}" style="flex: 1;"><button type="button" class="btn-secondary">Bugun</button></a>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <div class="card">
         <h2><span>📅</span> Yozuvlar ro'yxati</h2>

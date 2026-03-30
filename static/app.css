@@ -355,3 +355,50 @@ tr:last-child td {
     color: white;
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
+
+/* Floating Action Button */
+.fab {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+    z-index: 1000;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.fab:hover {
+    transform: scale(1.1);
+    background: #1d4ed8;
+}
+
+/* Filter Row Refinement */
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-end;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.btn-secondary-link {
+    text-decoration: none;
+}

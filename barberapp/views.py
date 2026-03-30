@@ -8,8 +8,13 @@ from .models import Appointment
 
 
 def dashboard(request):
-    # 1) GET -> faqat bugungi/kelajakdagi navbatlar (view only)
-    selected_date = timezone.localdate()
+    # 1) GET -> date filter (default: bugun)
+    date_str = request.GET.get("date")
+    selected_date = parse_date(date_str) if date_str else timezone.localdate()
+
+    if not selected_date:
+        selected_date = timezone.localdate()
+
     tz = timezone.get_current_timezone()
     start = timezone.make_aware(
         timezone.datetime.combine(selected_date, timezone.datetime.min.time()),
@@ -38,37 +43,16 @@ def management(request):
         form = AppointmentForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("management")
+            return redirect("dashboard") # Yaratilgandan keyin dashboardga
     else:
         form = AppointmentForm()
-
-    # 2) GET -> date filter (default: bugun)
-    date_str = request.GET.get("date")
-    selected_date = parse_date(date_str) if date_str else timezone.localdate()
-
-    if not selected_date:
-        selected_date = timezone.localdate()
-
-    tz = timezone.get_current_timezone()
-    start = timezone.make_aware(
-        timezone.datetime.combine(selected_date, timezone.datetime.min.time()),
-        tz
-    )
-    end = start + timezone.timedelta(days=1)
-
-    appts = (
-        Appointment.objects
-        .filter(scheduled_at__gte=start, scheduled_at__lt=end)
-        .order_by("scheduled_at")
-    )
 
     return render(
         request,
         "management.html",
         {
             "form": form,
-            "appts": appts,
-            "selected_date": selected_date,
+            "selected_date": timezone.localdate(),
         },
     )
 

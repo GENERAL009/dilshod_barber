@@ -10,6 +10,7 @@ router.register(r'appointments', AppointmentViewSet)
 urlpatterns = [
     path("", views.dashboard, name="dashboard"),
     path("cancel/<int:pk>/", views.cancel_appointment, name="cancel_appointment"),
+    path("trigger-reminders/", views.trigger_reminders, name="trigger_reminders"),
     path("api/", include(router.urls)),
     
     # Swagger UI:

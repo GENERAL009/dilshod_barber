@@ -61,7 +61,7 @@ from django.views.decorators.http import require_GET
 from django.core.management import call_command
 
 # ✅ uzun, taxmin qilib bo'lmaydigan token qo'ying
-REMINDER_TOKEN = "PUT_YOUR_LONG_RANDOM_TOKEN_HERE"
+REMINDER_TOKEN = "barber_sms_trigger_secret_998"
 
 @csrf_exempt
 @require_GET

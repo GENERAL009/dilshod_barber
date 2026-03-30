@@ -13,24 +13,15 @@
 <div class="wrap">
     <header class="main-header">
         <div class="logo-area">
-<<<<<<< HEAD
-                <span class="logo-icon">🏠</span>
-=======
             <span class="logo-icon">📋</span>
->>>>>>> b62acdd2e8c197459e3bff007c2a4807af4676ba
             <h1>Dashboard</h1>
         </div>
         <div class="date-display">{{ selected_date|date:"d F, Y" }}</div>
     </header>
 
     <nav class="nav-bar">
-<<<<<<< HEAD
-        <a href="{% url 'dashboard' %}" class="nav-link"><button>🏠 Dashboard</button></a>
-        <a href="{% url 'management' %}" class="nav-link active"><button>🛠️ Boshqaruv</button></a>
-=======
-        <a href="{% url 'dashboard' %}" class="nav-link active">🏠 Dashboard</a>
-        <a href="{% url 'management' %}" class="nav-link">➕ Yangi qo'shish</a>
->>>>>>> b62acdd2e8c197459e3bff007c2a4807af4676ba
+        <a href="{% url 'dashboard' %}" class="nav-btn active">🏠 Dashboard</a>
+        <a href="{% url 'management' %}" class="nav-btn">🛠️ Boshqaruv</a>
     </nav>
 
     <div class="grid" style="margin-bottom: 2rem;">

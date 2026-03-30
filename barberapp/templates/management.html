@@ -20,13 +20,8 @@
     </header>
 
     <nav class="nav-bar">
-<<<<<<< HEAD
-        <a href="{% url 'dashboard' %}" class="nav-link"><button>🏠 Dashboard</button></a>
-        <a href="{% url 'management' %}" class="nav-link active"><button>🛠️ Boshqaruv</button></a>
-=======
-        <a href="{% url 'dashboard' %}" class="nav-link">🏠 Dashboard</a>
-        <a href="{% url 'management' %}" class="nav-link active">➕ Yangi qo'shish</a>
->>>>>>> b62acdd2e8c197459e3bff007c2a4807af4676ba
+        <a href="{% url 'dashboard' %}" class="nav-btn">🏠 Dashboard</a>
+        <a href="{% url 'management' %}" class="nav-btn active">🛠️ Boshqaruv</a>
     </nav>
 
     <div style="max-width: 600px; margin: 0 auto;">
@@ -63,104 +58,6 @@
                 {% endif %}
             </form>
         </div>
-<<<<<<< HEAD
-
-        <div class="card">
-            <h2><span>🔍</span> Filter</h2>
-            <form method="get">
-                <label>Kunni tanlang</label>
-                <input type="date" name="date" value="{{ selected_date|date:'Y-m-d' }}">
-                <div style="display: flex; gap: 0.75rem;">
-                    <button type="submit">Qidirish</button>
-                    <a href="{% url 'management' %}" style="flex: 1;"><button type="button" class="btn-secondary">Bugun</button></a>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="card">
-        <h2><span>📅</span> Yozuvlar ro'yxati</h2>
-
-        <!-- Desktop Table -->
-        <div class="table-wrap desktop-only">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Vaqt</th>
-                        <th>Telefon</th>
-                        <th>Status</th>
-                        <th>SMS</th>
-                        <th>Harakat</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for a in appts %}
-                    <tr>
-                        <td style="font-weight: 600;">{{ a.scheduled_at|date:"H:i" }}</td>
-                        <td>+998 {{ a.phone }}</td>
-                        <td>
-                            {% if a.status == "cancelled" %}
-                            <span class="status-badge status-cancelled">Bekor qilindi</span>
-                            {% elif a.status == "done" %}
-                            <span class="status-badge" style="background: #eff6ff; color: #3b82f6;">Tugallandi</span>
-                            {% else %}
-                            <span class="status-badge status-scheduled">Rejalashtirilgan</span>
-                            {% endif %}
-                        </td>
-                        <td style="text-align: center;">{% if a.reminder_sent_at %}✅{% else %}<span style="color: var(--text-muted); opacity: 0.5;">—</span>{% endif %}</td>
-                        <td>
-                            {% if a.status == "scheduled" %}
-                            <a href="{% url 'cancel_appointment' a.id %}">
-                                <button type="button" class="btn-cancel">Bekor qilish</button>
-                            </a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 3rem 0;">
-                            Hozircha yozuvlar mavjud emas
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Mobile List -->
-        <div class="appt-card-list mobile-only">
-            {% for a in appts %}
-            <div class="appt-mobile-item">
-                <div class="appt-mobile-header">
-                    <span class="appt-mobile-time">{{ a.scheduled_at|date:"H:i" }}</span>
-                    {% if a.status == "cancelled" %}
-                        <span class="status-badge status-cancelled">Bekor qilindi</span>
-                    {% elif a.status == "done" %}
-                        <span class="status-badge" style="background: #eff6ff; color: #3b82f6;">Tugallandi</span>
-                    {% else %}
-                        <span class="status-badge status-scheduled">Rejalashtirilgan</span>
-                    {% endif %}
-                </div>
-                <span class="appt-mobile-phone">📞 +998 {{ a.phone }}</span>
-                <div style="font-size: 0.8125rem; color: var(--text-muted);">
-                    SMS: {% if a.reminder_sent_at %}Yuborildi ✅{% else %}Yuborilmadi{% endif %}
-                </div>
-                {% if a.status == "scheduled" %}
-                <div class="appt-mobile-actions">
-                    <a href="{% url 'cancel_appointment' a.id %}" style="width: 100%;">
-                        <button type="button" class="btn-cancel" style="width: 100%;">Bekor qilish</button>
-                    </a>
-                </div>
-                {% endif %}
-            </div>
-            {% empty %}
-            <div style="text-align: center; color: var(--text-muted); padding: 2rem 0;">
-                Hozircha yozuvlar mavjud emas
-            </div>
-            {% endfor %}
-        </div>
-=======
->>>>>>> b62acdd2e8c197459e3bff007c2a4807af4676ba
     </div>
 </div>
 </body>
